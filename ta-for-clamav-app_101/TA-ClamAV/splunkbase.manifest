@@ -1,0 +1,117 @@
+{
+  "version": "1.0",
+  "date": "2022-11-14T12:45:27.900572672Z",
+  "hashAlgorithm": "SHA-256",
+  "app": {
+    "id": 3619,
+    "version": "1.0.1",
+    "files": [
+      {
+        "path": "default/transforms.conf",
+        "hash": "f5d04be67105b8be6b3373d1ba23d28602dd91998b6fa6a6ff436ecde38aa508"
+      },
+      {
+        "path": "default/eventtypes.conf",
+        "hash": "5fb0e1cb550c1290dcb466a8eb0c6bbff7b956c1b1dda0cc44c63a085ad56c81"
+      },
+      {
+        "path": "default/app.conf",
+        "hash": "2265b3af63125638e4a6cccaa96b2b68d254f924cfa08a28af86b8d4e10365a7"
+      },
+      {
+        "path": "default/tags.conf",
+        "hash": "db4ac004314b47ada2dc46a40796406d438b206c7584666906c1c1872282fedc"
+      },
+      {
+        "path": "default/macros.conf",
+        "hash": "7f52daa73f056e24928035459e11562486a18e29a798c9eab32d7542ef603d0e"
+      },
+      {
+        "path": "default/addon_builder.conf",
+        "hash": "feaca8f1f0353b9feedac944e82f4f981fcfaa3134b7e2b6ed5130f933fa7940"
+      },
+      {
+        "path": "default/distsearch.conf",
+        "hash": "cfdcbab374342e787aacf48f5c13e89c22fb0eb28174ecbad562aa03caa832de"
+      },
+      {
+        "path": "default/props.conf",
+        "hash": "10825e76377aae7debd73a71af5f3be48737bcbfa449152b978e5e097dc76c70"
+      },
+      {
+        "path": "lookups/clamav_actions.csv",
+        "hash": "5ef7f972f40de0462e36fc17461ffe50d718f4b09f7e14261052a461abdfcaa2"
+      },
+      {
+        "path": "metadata/default.meta",
+        "hash": "0b35e61e65c956d21328ff0e44a02fe66f88ce8991b5c3d147d57f5947d7e710"
+      },
+      {
+        "path": "README.txt",
+        "hash": "0ad39193061fde8dee3f7641013a4cc5d21ab41c8b612baf39d41c61a8ca283e"
+      },
+      {
+        "path": "static/appIconAlt_2x.png",
+        "hash": "eb698b91f10731e85f17b32339cd045c84b166556c0b2dac89deef61e6efa7bb"
+      },
+      {
+        "path": "static/appLogo_2x.png",
+        "hash": "d2b58651325c11f2f60def4c6cf264364350b80af5a5882ffa41609b2e24c24e"
+      },
+      {
+        "path": "static/screenshot.png",
+        "hash": "6e7e50d5685a48b46adab7b196072bda63b82d02c3a63ede39d1d8be6b5c70d7"
+      },
+      {
+        "path": "static/appIcon.png",
+        "hash": "9f238b7df51ed3c32eecc3e34826a6e1bd11a1ec9aa2342a36928ce8d6fc12e9"
+      },
+      {
+        "path": "static/appIconAlt.png",
+        "hash": "9f238b7df51ed3c32eecc3e34826a6e1bd11a1ec9aa2342a36928ce8d6fc12e9"
+      },
+      {
+        "path": "static/appIcon_2x.png",
+        "hash": "eb698b91f10731e85f17b32339cd045c84b166556c0b2dac89deef61e6efa7bb"
+      },
+      {
+        "path": "static/appLogo.png",
+        "hash": "926b88fef6c32939d736c0b6123a76d56bbadaa4e4a289eb5d1e74db9c461f9a"
+      }
+    ]
+  },
+  "products": [
+    {
+      "platform": "splunk",
+      "product": "enterprise",
+      "versions": [],
+      "architectures": [
+        "x86_64"
+      ],
+      "operatingSystems": [
+        "windows",
+        "linux",
+        "macos",
+        "freebsd",
+        "solaris",
+        "aix"
+      ]
+    },
+    {
+      "platform": "splunk",
+      "product": "cloud",
+      "versions": [],
+      "architectures": [
+        "x86_64"
+      ],
+      "operatingSystems": [
+        "windows",
+        "linux",
+        "macos",
+        "freebsd",
+        "solaris",
+        "aix"
+      ]
+    }
+  ]
+}
