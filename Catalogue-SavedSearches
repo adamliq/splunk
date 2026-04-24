@@ -1,10 +1,10 @@
 from rest "/servicesNS/-/-/saved/searches"
-| fields title eai:data.id eai:acl.app eai:acl.owner
+| fields title eai:data.id eai:acl.app eai:acl.owner is_scheduled alert_type
 
-/* Build a unique URI */
+/* Build unique URI */
 | eval uri="/servicesNS/" . eai:acl.owner . "/" . eai:acl.app . "/saved/searches/" . eai:data.id
 
-/* Hash it */
+/* Hash */
 | eval hash=sha256(uri)
 
 /* Check KV store */
@@ -17,21 +17,31 @@ from rest "/servicesNS/-/-/saved/searches"
        owner=eai:acl.owner,
        created_at=now()
 
-/* Get current max serial */
+/* Derive category */
+| eval category=case(
+    alert_type="always" OR is_scheduled=1, "ALERT",
+    is_scheduled=0, "ADHOC",
+    true(), "SS"
+)
+
+/* Get max serial */
 | appendcols [
     | from inputlookup:ABC
-    | stats max(serial) as max_serial
+    | stats max(serial_num) as max_serial
 ]
 
 | eval max_serial=coalesce(max_serial, 0)
 
-/* Increment serials for new rows */
+/* Increment */
 | streamstats count as increment
-| eval serial=max_serial + increment
+| eval serial_num=max_serial + increment
 
-/* KV store key */
+/* Final formatted serial */
+| eval serial="SPL-" . category . "-" . tostring(serial_num)
+
+/* KV key */
 | eval _key=hash
 
-| fields _key hash uri savedsearch_name app owner created_at serial
+| fields _key hash uri savedsearch_name app owner category created_at serial serial_num
 
 | into ABC
