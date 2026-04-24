@@ -1,0 +1,56 @@
+Here is a comprehensive table of Azure permissions required for each input in the Splunk Add-on for Microsoft Office 365, sourced directly from the official Splunk documentation.
+
+Azure API Permissions by Input — Splunk Add-on for Microsoft Office 365
+All permissions below are Application permissions (not delegated) and must be granted with Admin Consent in Azure AD (Microsoft Entra ID). ￼
+
+🔐 All-Input Permissions (Required for All Inputs)
+These are the baseline permissions needed regardless of which inputs you enable:
+
+
+
+|Permission                     |API                       |Required For                     |
+|-------------------------------|--------------------------|---------------------------------|
+|`ActivityFeed.Read`            |Office 365 Management APIs|All Management Activity inputs   |
+|`AuditLog.Read.All`            |Microsoft Graph           |Audit log collection             |
+|`Reports.Read.All`             |Microsoft Graph           |Graph Reporting inputs           |
+|`ServiceHealth.Read.All`       |Microsoft Graph           |Service Health & Communications  |
+|`ServiceMessage.Read.All`      |Microsoft Graph           |Service Health & Communications  |
+|`ExchangeMessageTrace.Read.All`|Microsoft Graph           |Message Trace                    |
+|`User.Read.All`                |Microsoft Graph           |Entra ID Metadata (Users)        |
+|`Group.Read.All`               |Microsoft Graph           |Entra ID Metadata (Groups)       |
+|`Directory.Read.All`           |Microsoft Graph           |Entra ID Metadata (Devices, Apps)|
+
+📋 Per-Input Permission Breakdown
+
+
+
+|Input                                                                        |Sourcetype                                              |Required Azure Permission(s)                                             |API                              |Notes                                                                                                                         |
+|-----------------------------------------------------------------------------|--------------------------------------------------------|-------------------------------------------------------------------------|---------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+|**Management Activity** (Audit.AzureActiveDirectory)                         |`o365:management:activity`                              |`ActivityFeed.Read`                                                      |Office 365 Management APIs       |                                                                                                                              |
+|**Management Activity** (Audit.Exchange)                                     |`o365:management:activity`                              |`ActivityFeed.Read`                                                      |Office 365 Management APIs       |Enable mailbox audit logging in O365 separately                                                                               |
+|**Management Activity** (Audit.SharePoint)                                   |`o365:management:activity`                              |`ActivityFeed.Read`                                                      |Office 365 Management APIs       |                                                                                                                              |
+|**Management Activity** (Audit.General)                                      |`o365:management:activity`                              |`ActivityFeed.Read`                                                      |Office 365 Management APIs       |                                                                                                                              |
+|**Management Activity** (DLP.All)                                            |`o365:management:activity`                              |`ActivityFeed.Read`, `ActivityFeed.ReadDlp` *(optional)*                 |Office 365 Management APIs       |DLP events require additional Azure AD subscription                                                                           |
+|**Graph Reporting** (Office365, OneDrive, SharePoint, Teams, Yammer, MailBox)|`o365:graph:api`                                        |`Reports.Read.All`                                                       |Microsoft Graph                  |                                                                                                                              |
+|**Audit Logs** (Sign-Ins)                                                    |`o365:graph:api`                                        |`AuditLog.Read.All`                                                      |Microsoft Graph                  |Requires Azure AD P1/P2 license for sign-in logs                                                                              |
+|**Service Health & Communications**                                          |`o365:service:healthIssue`, `o365:service:updateMessage`|`ServiceHealth.Read.All`, `ServiceMessage.Read.All`                      |Microsoft Graph                  |Use Graph permissions (v3.0.0+); disable the Office 365 Management API version of `ServiceHealth.Read.All`                    |
+|**Message Trace**                                                            |`o365:reporting:messagetrace`                           |`ExchangeMessageTrace.Read.All`, `Application.ReadWrite.All` *(optional)*|Microsoft Graph                  |`Application.ReadWrite.All` allows automatic prerequisite provisioning; can be omitted if prerequisites are completed manually|
+|**Microsoft Entra ID Metadata** (Users, Groups, Applications, Devices)       |`o365:metadata`                                         |`User.Read.All`, `Group.Read.All`, `Directory.Read.All`                  |Microsoft Graph                  |                                                                                                                              |
+|**Cloud App Security**                                                       |—                                                       |Cloud App Security API Token (separate)                                  |Microsoft Defender for Cloud Apps|Uses token-based auth, not standard Graph/O365 permissions                                                                    |
+
+🔵 Optional Permissions
+
+
+
+|Permission                            |API                       |Use Case                                             |
+|--------------------------------------|--------------------------|-----------------------------------------------------|
+|`ActivityFeed.ReadDlp`                |Office 365 Management APIs|Collect DLP policy events with sensitive data details|
+|`Application.ReadWrite.All`           |Microsoft Graph           |Auto-provision Message Trace service principal       |
+|`InformationProtectionPolicy.Read.All`|Microsoft Graph           |Read published sensitivity labels and label policies |
+|`GroupMember.ReadWrite.All`           |Microsoft Graph           |Required for the **Add Member to Group** alert action|
+
+⚠️ Key Notes
+	•	After setting all permissions, click Grant admin consent for your tenant — permissions do not take effect until admin consent is granted. ￼
+	•	For the Service Health input on version 3.0.0 or later, disable ServiceHealth.Read.All under Office 365 Management APIs and enable it under Microsoft Graph instead. ￼
+	•	For Message Trace, the add-on can attempt prerequisite provisioning automatically when Application.ReadWrite.All is granted. If you prefer not to grant that permission, complete the Microsoft Graph prerequisites manually. ￼
+	•	Accessing DLP policy events requires an additional Microsoft Azure Active Directory subscription. ￼​​​​​​​​​​​​​​​​
