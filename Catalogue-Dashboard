@@ -1,0 +1,27 @@
+from rest "/servicesNS/-/-/data/ui/views"
+| fields title eai:data.id
+| eval uri="/servicesNS/-/-/data/ui/views/" . eai:data.id
+| eval hash=sha256(uri)
+
+| lookup ABC hash OUTPUT hash as existing_hash
+| where isnull(existing_hash)
+
+| eval dashboard_title=title, created_at=now()
+
+/* Get current max serial from KV store */
+| appendcols [
+    | from inputlookup:ABC
+    | stats max(serial) as max_serial
+]
+
+| eval max_serial=coalesce(max_serial, 0)
+
+/* Assign incrementing serial per new row */
+| streamstats count as increment
+| eval serial=max_serial + increment
+
+| eval _key=hash
+
+| fields _key hash uri dashboard_title created_at serial
+
+| into ABC
