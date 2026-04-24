@@ -1,0 +1,37 @@
+from rest "/servicesNS/-/-/saved/searches"
+| fields title eai:data.id eai:acl.app eai:acl.owner
+
+/* Build a unique URI */
+| eval uri="/servicesNS/" . eai:acl.owner . "/" . eai:acl.app . "/saved/searches/" . eai:data.id
+
+/* Hash it */
+| eval hash=sha256(uri)
+
+/* Check KV store */
+| lookup ABC hash OUTPUT hash as existing_hash
+| where isnull(existing_hash)
+
+/* Metadata */
+| eval savedsearch_name=title,
+       app=eai:acl.app,
+       owner=eai:acl.owner,
+       created_at=now()
+
+/* Get current max serial */
+| appendcols [
+    | from inputlookup:ABC
+    | stats max(serial) as max_serial
+]
+
+| eval max_serial=coalesce(max_serial, 0)
+
+/* Increment serials for new rows */
+| streamstats count as increment
+| eval serial=max_serial + increment
+
+/* KV store key */
+| eval _key=hash
+
+| fields _key hash uri savedsearch_name app owner created_at serial
+
+| into ABC
