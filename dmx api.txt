@@ -1,0 +1,44 @@
+$splunkHost = "your-search-head.example.com"
+$user       = "your-username"
+$token      = "your-auth-token"
+
+$uri = "https://${splunkHost}:8089/servicesNS/${user}/dmx/openapi/v1"
+
+$headers = @{
+    Authorization = "Bearer $token"
+    Accept        = "application/json"
+}
+
+# Optional: ignore self-signed certs
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+
+$response = Invoke-RestMethod -Uri $uri -Method Get -Headers $headers
+
+# Pretty-print
+$response | ConvertTo-Json -Depth 20
+
+
+
+
+
+
+$splunkHost   = "your-search-head.example.com"
+$mgmtPort     = 8089
+$user         = "your-username"
+$token        = "your-auth-token"
+
+$baseUrl = "https://${splunkHost}:${mgmtPort}/servicesNS/${user}/dmx/v1/data"
+$uri     = "$baseUrl/pipelines"
+
+$headers = @{
+    Authorization = "Bearer $token"
+    Accept        = "application/json"
+}
+
+# Optional: ignore self-signed certs (remove if you have a proper cert)
+[System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
+
+$response = Invoke-RestMethod -Uri $uri -Method Get -Headers $headers
+
+# Pretty-print the result
+$response | ConvertTo-Json -Depth 10
